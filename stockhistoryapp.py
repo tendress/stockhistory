@@ -25,7 +25,7 @@ class StockHistory:
         self.stockhistory['DailyReturn'] = self.stockhistory['Close'].pct_change()
         # create a column that takes the initial amount and adds the daily return
         self.stockhistory['PortfolioValue'] = self.initialamt * (1 + self.stockhistory['DailyReturn']).cumprod()
-        self.stockhistory.to_csv('Outputs/portfolio.csv')
+        # self.stockhistory.to_csv('Outputs/portfolio.csv')
         return self.stockhistory
 
 # Streamlit app
@@ -41,5 +41,5 @@ if st.button("Get Portfolio"):
     stock_history = StockHistory(ticker, startdate, enddate, initialamt)
     stock_history.getHistory()
     portfolio = stock_history.getMyPortfolio()
-    st.success("Portfolio calculated and saved to Outputs/portfolio.csv")
+    st.success("Portfolio calculated")
     st.dataframe(portfolio)
