@@ -6,3 +6,4 @@ matplotlib
 tkinter
 datetime
 mplcursors
+json
