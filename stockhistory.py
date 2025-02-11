@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
-import streamlit as st
+
+
 
 class StockHistory:
     
@@ -18,6 +19,7 @@ class StockHistory:
         #just get the closing price
         self.stockhistory = stockhistory['Close']
         self.stockhistory = pd.DataFrame(stockhistory)
+        #self.stockhistory.to_csv('stockhistory.csv')
         
     def getMyPortfolio(self):
         """Provided an initial amount, calculate the portfolio value"""
@@ -25,21 +27,12 @@ class StockHistory:
         self.stockhistory['DailyReturn'] = self.stockhistory['Close'].pct_change()
         # create a column that takes the initial amount and adds the daily return
         self.stockhistory['PortfolioValue'] = self.initialamt * (1 + self.stockhistory['DailyReturn']).cumprod()
-        self.stockhistory.to_csv('Outputs/portfolio.csv')
-        return self.stockhistory
+        self.stockhistory.to_csv(f'Outputs/portfolio{self.ticker}-{self.startdate}-{self.enddate}.csv')
+        
+        
 
-# Streamlit app
-st.title("Stock History App")
 
-# Input fields
-ticker = st.text_input("Ticker:")
-startdate = st.date_input("Start Date")
-enddate = st.date_input("End Date")
-initialamt = st.number_input("Initial Amount", min_value=0.0, step=100.0)
+my_ticker = StockHistory('PEP', startdate='2024-12-11', enddate='2025-01-15', initialamt=32155.60)
+my_ticker.getHistory()
+my_ticker.getMyPortfolio()
 
-if st.button("Get Portfolio"):
-    stock_history = StockHistory(ticker, startdate, enddate, initialamt)
-    stock_history.getHistory()
-    portfolio = stock_history.getMyPortfolio()
-    st.success("Portfolio calculated and saved to Outputs/portfolio.csv")
-    st.dataframe(portfolio)
