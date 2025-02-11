@@ -2,4 +2,7 @@ yfinance
 pandas
 streamlit
 numpy
-
+matplotlib
+tkinter
+datetime
+mplcursors
